@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useReducer } from "react";
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./screens/pages/Dashboard";
+import Loing from "./screens/pages/Login";
+import NotFound from "./screens/pages/NotFound";
+import Home from "./screens/pages/Home/index";
+import { userReducer, initialState } from "./services/contexts";
+export const userContext = React.createContext({});
 function App() {
+  const [state, dispatch] = useReducer(userReducer, initialState);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <userContext.Provider value={{ state, dispatch }}>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Loing />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </userContext.Provider>
   );
 }
 
